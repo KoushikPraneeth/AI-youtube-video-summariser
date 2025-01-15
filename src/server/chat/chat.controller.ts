@@ -10,9 +10,7 @@ export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
   @Post()
-  async chat(
-    @Body() chatMessageDto: ChatMessageDto
-  ): Promise<{ response: string; context: string[] }> {
+  chat(@Body() chatMessageDto: ChatMessageDto): Promise<{ response: string; context: string[] }> {
     console.log('Received chat message:', chatMessageDto);
     return this.chatService.processMessage(
       chatMessageDto.message,
