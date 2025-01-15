@@ -10,7 +10,7 @@ export class VideoController {
   constructor(private readonly videoService: VideoService) {}
 
   @Post('summarize')
-  summarizeVideo(
+  async summarizeVideo(
     @Body() summarizeVideoDto: SummarizeVideoDto
   ): Promise<{ summary: string; transcript: string }> {
     console.log('Received summarize request for video:', summarizeVideoDto.videoId);
