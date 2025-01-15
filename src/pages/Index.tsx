@@ -150,7 +150,7 @@ const Index = () => {
               <VideoPlayer videoId={videoId} />
               <div className="space-y-6">
                 <Summary summary={summary} isLoading={isLoading} />
-                <Transcript content={transcript} />
+                <Transcript content={transcript} isLoading={isLoading} />
               </div>
             </div>
             <Chat
