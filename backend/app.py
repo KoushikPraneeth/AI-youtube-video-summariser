@@ -102,16 +102,14 @@ def transcribe_audio(audio_path):
 def get_summary(transcript):
     """Generate summary using DeepSeek API."""
     try:
-        prompt = """
-        Please analyze the following transcript and provide a comprehensive summary that includes:
-        1. Main topics or themes
-        2. Key points discussed
-        3. Important conclusions or outcomes
-        4. Tone and context of the discussion
+        prompt = f"""
+        As an expert content analyzer, provide a clear and concise summary of this video transcript.
+        Format the summary in clear, readable paragraphs without special markers, headers, or symbols.
+        Keep the language natural and accessible.
 
         Transcript:
         {transcript}
-        """.format(transcript=transcript)
+        """
         
         response = requests.post(
             f"{DEEPSEEK_API_BASE}/chat/completions",
@@ -121,9 +119,18 @@ def get_summary(transcript):
             },
             json={
                 "model": "deepseek-chat",
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.5,  # Lower temperature for more focused summary
-                "max_tokens": 500    # Ensure summary isn't too long
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "You are a skilled content summarizer. Provide clear, concise summaries in natural language without special formatting or markers."
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                "temperature": 0.3,  # Lower for more consistent formatting
+                "max_tokens": 500
             }
         )
         
