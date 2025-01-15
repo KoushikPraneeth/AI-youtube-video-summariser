@@ -39,9 +39,25 @@ const Index = () => {
     setVideoId(id);
 
     try {
-      // TODO: Replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setSummary("This is a placeholder summary. Replace with actual API integration.");
+      const response = await fetch('http://localhost:5001/process-video', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to process video');
+      }
+
+      const data = await response.json();
+      if (!data.summary) {
+        throw new Error('Invalid response format from server');
+      }
+
+      setSummary(data.summary);
       setMessages([{
         role: "assistant",
         content: "Hello! I've analyzed the video. Feel free to ask me any questions about it."
@@ -62,11 +78,30 @@ const Index = () => {
     setMessages(prev => [...prev, { role: "user", content: message }]);
 
     try {
-      // TODO: Replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('http://localhost:5001/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          session_id: videoId,
+          message: message
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to send message');
+      }
+
+      const data = await response.json();
+      if (!data.response) {
+        throw new Error('Invalid response format from server');
+      }
+
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: "This is a placeholder response. Replace with actual AI integration."
+        content: data.response
       }]);
     } catch (error) {
       toast({
