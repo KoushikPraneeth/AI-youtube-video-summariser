@@ -3,7 +3,7 @@ import { getSubtitles } from 'youtube-captions-scraper';
 
 @Injectable()
 export class VideoService {
-  async summarizeVideo(videoId: string) {
+  async summarizeVideo(videoId: string): Promise<{ summary: string; transcript: string }> {
     try {
       console.log('Fetching captions for video:', videoId);
       const captions = await getSubtitles({
