@@ -234,3 +234,4 @@ def chat():
         return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
 
 if __name__ == '__main__':
+    app.run(debug=True, port=5001)
