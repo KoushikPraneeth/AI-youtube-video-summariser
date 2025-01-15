@@ -102,7 +102,16 @@ def transcribe_audio(audio_path):
 def get_summary(transcript):
     """Generate summary using DeepSeek API."""
     try:
-        prompt = f"Please provide a comprehensive summary of the following transcript:\n\n{transcript}"
+        prompt = """
+        Please analyze the following transcript and provide a comprehensive summary that includes:
+        1. Main topics or themes
+        2. Key points discussed
+        3. Important conclusions or outcomes
+        4. Tone and context of the discussion
+
+        Transcript:
+        {transcript}
+        """.format(transcript=transcript)
         
         response = requests.post(
             f"{DEEPSEEK_API_BASE}/chat/completions",
@@ -113,7 +122,8 @@ def get_summary(transcript):
             json={
                 "model": "deepseek-chat",
                 "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.7
+                "temperature": 0.5,  # Lower temperature for more focused summary
+                "max_tokens": 500    # Ensure summary isn't too long
             }
         )
         
@@ -174,7 +184,7 @@ def process_video():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    """Handle chat messages."""
+    """Handle chat messages with enhanced context."""
     try:
         data = request.json
         session_id = data.get('session_id')
@@ -183,25 +193,28 @@ def chat():
         if not session_id or not user_message:
             return jsonify({"error": "Missing session_id or message"}), 400
         
-        # Create new session if it doesn't exist
         if session_id not in chat_sessions:
-            chat_sessions[session_id] = {
-                "transcript": "",
-                "summary": "",
-                "chat_history": []
-            }
+            return jsonify({"error": "Session expired or invalid"}), 404
         
-        # Prepare context for the AI
         session_data = chat_sessions[session_id]
         
-        # Build conversation history with proper context
+        # Enhanced context building
         messages = [
             {
                 "role": "system",
-                "content": f"""You are a helpful AI assistant analyzing a video. Here is the video context:
+                "content": f"""You are an AI assistant analyzing a video. Here's the context:
                 
-                Video Summary: {session_data['summary']}
-                Full Transcript: {session_data['transcript']}
+                SUMMARY:
+                {session_data['summary']}
+                
+                FULL TRANSCRIPT:
+                {session_data['transcript']}
+                
+                Your task is to:
+                1. Answer questions about the video content accurately
+                2. Reference specific parts of the transcript when relevant
+                3. Maintain context from the previous conversation
+                4. Admit if something isn't mentioned in the video
                 """
             }
         ]

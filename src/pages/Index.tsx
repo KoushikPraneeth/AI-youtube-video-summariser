@@ -12,6 +12,7 @@ interface Message {
 
 const Index = () => {
   const [videoId, setVideoId] = useState("");
+  const [sessionId, setSessionId] = useState("");
   const [summary, setSummary] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +38,8 @@ const Index = () => {
 
     setIsLoading(true);
     setVideoId(id);
+    setSessionId(""); // Reset session ID
+    setMessages([]); // Clear previous messages
 
     try {
       const response = await fetch('http://localhost:5001/process-video', {
@@ -53,11 +56,12 @@ const Index = () => {
       }
 
       const data = await response.json();
-      if (!data.summary) {
+      if (!data.summary || !data.session_id) {
         throw new Error('Invalid response format from server');
       }
 
       setSummary(data.summary);
+      setSessionId(data.session_id);
       setMessages([{
         role: "assistant",
         content: "Hello! I've analyzed the video. Feel free to ask me any questions about it."
@@ -74,6 +78,15 @@ const Index = () => {
   };
 
   const handleSendMessage = async (message: string) => {
+    if (!sessionId) {
+      toast({
+        title: "Error",
+        description: "No active session",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsChatLoading(true);
     setMessages(prev => [...prev, { role: "user", content: message }]);
 
@@ -84,7 +97,7 @@ const Index = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          session_id: videoId,
+          session_id: sessionId,
           message: message
         }),
       });
