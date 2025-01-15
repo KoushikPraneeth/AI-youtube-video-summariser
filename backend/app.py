@@ -183,20 +183,37 @@ def chat():
         if not session_id or not user_message:
             return jsonify({"error": "Missing session_id or message"}), 400
         
+        # Create new session if it doesn't exist
         if session_id not in chat_sessions:
-            return jsonify({"error": "Invalid session ID"}), 404
+            chat_sessions[session_id] = {
+                "transcript": "",
+                "summary": "",
+                "chat_history": []
+            }
         
         # Prepare context for the AI
         session_data = chat_sessions[session_id]
-        context = f"""
-        Video Summary: {session_data['summary']}
-        Full Transcript: {session_data['transcript']}
         
-        Previous conversation:
-        {' '.join([f"{msg['role']}: {msg['content']}" for msg in session_data['chat_history']])}
+        # Build conversation history with proper context
+        messages = [
+            {
+                "role": "system",
+                "content": f"""You are a helpful AI assistant analyzing a video. Here is the video context:
+                
+                Video Summary: {session_data['summary']}
+                Full Transcript: {session_data['transcript']}
+                """
+            }
+        ]
         
-        User question: {user_message}
-        """
+        # Add previous conversation history
+        messages.extend(session_data['chat_history'])
+        
+        # Add current user message
+        messages.append({
+            "role": "user",
+            "content": user_message
+        })
         
         # Get AI response using DeepSeek
         response = requests.post(
@@ -207,8 +224,9 @@ def chat():
             },
             json={
                 "model": "deepseek-chat",
-                "messages": [{"role": "user", "content": context}],
-                "temperature": 0.7
+                "messages": messages,
+                "temperature": 0.7,
+                "max_tokens": 1000
             }
         )
         
