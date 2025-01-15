@@ -3,6 +3,7 @@ import { VideoInput } from "@/components/VideoInput";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { Summary } from "@/components/Summary";
 import { Chat } from "@/components/Chat";
+import { Transcript } from "@/components/Transcript";
 import { useToast } from "@/hooks/use-toast";
 
 interface Message {
@@ -14,6 +15,7 @@ const Index = () => {
   const [videoId, setVideoId] = useState("");
   const [sessionId, setSessionId] = useState("");
   const [summary, setSummary] = useState("");
+  const [transcript, setTranscript] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isChatLoading, setIsChatLoading] = useState(false);
@@ -56,11 +58,12 @@ const Index = () => {
       }
 
       const data = await response.json();
-      if (!data.summary || !data.session_id) {
+      if (!data.summary || !data.session_id || !data.transcript) {
         throw new Error('Invalid response format from server');
       }
 
       setSummary(data.summary);
+      setTranscript(data.transcript.text || data.transcript);
       setSessionId(data.session_id);
       setMessages([{
         role: "assistant",
@@ -145,7 +148,10 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-6">
               <VideoPlayer videoId={videoId} />
-              <Summary summary={summary} isLoading={isLoading} />
+              <div className="space-y-6">
+                <Summary summary={summary} isLoading={isLoading} />
+                <Transcript content={transcript} />
+              </div>
             </div>
             <Chat
               messages={messages}
