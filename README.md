@@ -113,28 +113,94 @@ Ai YouTube Video Summariser is an AI-powered web application that transforms the
 ## Project Structure
 Use code with caution.
 Markdown
-koushikpraneeth-ai-youtube-video-summariser.git/
-├── backend/ # Backend code (Flask API)
-│ ├── app.py # Main Flask application file
-│ └── requirements.txt # Backend dependencies
-├── src/ # Frontend code (React, TypeScript)
-│ ├── components/ # Reusable UI components
-│ ├── hooks/ # Custom React hooks
-│ ├── lib/ # Utility functions
-│ ├── pages/ # Application pages (e.g., Index.tsx)
-│ ├── App.css # Main application styles
-│ ├── App.tsx # Root application component
-│ ├── main.tsx # Entry point for the frontend
-│ └── vite-env.d.ts # TypeScript definitions for Vite
-├── public/ # Static assets
-├── .eslintrc.cjs # ESLint configuration
-├── index.html # HTML template
-├── package.json # Project dependencies and scripts
-├── postcss.config.js # PostCSS configuration
-├── tailwind.config.ts # Tailwind CSS configuration
-├── tsconfig.json # TypeScript configuration
-├── tsconfig.node.json # TypeScript configuration for Node.js
-└── vite.config.ts # Vite configuration
+Directory structure:
+└── koushikpraneeth-ai-youtube-video-summariser.git/
+    ├── README.md
+    ├── bun.lockb
+    ├── components.json
+    ├── eslint.config.js
+    ├── index.html
+    ├── package.json
+    ├── postcss.config.js
+    ├── tailwind.config.ts
+    ├── tsconfig.app.json
+    ├── tsconfig.json
+    ├── tsconfig.node.json
+    ├── vite.config.ts
+    ├── backend/
+    │   ├── app.py
+    │   └── requirements.txt
+    ├── public/
+    └── src/
+        ├── App.css
+        ├── App.tsx
+        ├── index.css
+        ├── main.tsx
+        ├── vite-env.d.ts
+        ├── components/
+        │   ├── Chat.tsx
+        │   ├── Summary.tsx
+        │   ├── Transcript.tsx
+        │   ├── VideoInput.tsx
+        │   ├── VideoPlayer.tsx
+        │   └── ui/
+        │       ├── accordion.tsx
+        │       ├── alert-dialog.tsx
+        │       ├── alert.tsx
+        │       ├── aspect-ratio.tsx
+        │       ├── avatar.tsx
+        │       ├── badge.tsx
+        │       ├── breadcrumb.tsx
+        │       ├── button.tsx
+        │       ├── calendar.tsx
+        │       ├── card.tsx
+        │       ├── carousel.tsx
+        │       ├── chart.tsx
+        │       ├── checkbox.tsx
+        │       ├── collapsible.tsx
+        │       ├── command.tsx
+        │       ├── context-menu.tsx
+        │       ├── dialog.tsx
+        │       ├── drawer.tsx
+        │       ├── dropdown-menu.tsx
+        │       ├── form.tsx
+        │       ├── hover-card.tsx
+        │       ├── input-otp.tsx
+        │       ├── input.tsx
+        │       ├── label.tsx
+        │       ├── menubar.tsx
+        │       ├── navigation-menu.tsx
+        │       ├── pagination.tsx
+        │       ├── popover.tsx
+        │       ├── progress.tsx
+        │       ├── radio-group.tsx
+        │       ├── resizable.tsx
+        │       ├── scroll-area.tsx
+        │       ├── select.tsx
+        │       ├── separator.tsx
+        │       ├── sheet.tsx
+        │       ├── sidebar.tsx
+        │       ├── skeleton.tsx
+        │       ├── slider.tsx
+        │       ├── sonner.tsx
+        │       ├── switch.tsx
+        │       ├── table.tsx
+        │       ├── tabs.tsx
+        │       ├── textarea.tsx
+        │       ├── toast.tsx
+        │       ├── toaster.tsx
+        │       ├── toggle-group.tsx
+        │       ├── toggle.tsx
+        │       ├── tooltip.tsx
+        │       └── use-toast.ts
+        ├── hooks/
+        │   ├── use-mobile.tsx
+        │   └── use-toast.ts
+        ├── lib/
+        │   └── utils.ts
+        └── pages/
+            └── Index.tsx
+
 
 ## Contributing
 
