@@ -3,6 +3,8 @@
 
 Ai YouTube Video Summariser is an AI-powered web application that transforms the way you interact with YouTube videos. It provides concise summaries, detailed transcripts, and an intelligent chatbot to answer your questions about the video content, saving you time and enhancing your understanding.
 
+![image](https://github.com/user-attachments/assets/2a9e63aa-e071-4729-b61f-a9f68df23b5e)
+
 ## Features
 
 *   **AI-Generated Summaries:** Get straight to the core ideas of any YouTube video with ViewScribe's accurate and concise summaries.
@@ -201,9 +203,5 @@ Directory structure:
         └── pages/
             └── Index.tsx
 
-
-## Contributing
-
-Contributions are welcome! If you find a bug or have a feature request, please open an issue. If you want to contribute code, please fork the repository and submit a pull request.
 
 Project Link: (https://github.com/your-username/koushikpraneeth-ai-youtube-video-summariser.git)
